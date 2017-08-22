@@ -62,3 +62,54 @@ root.mainloop()
 ![texty-img](screenshots/texty-01.png)
 
 Also, type `$ git checkout 1b` to perform a checkout of this version.
+
+## Adding a menu and menu items (File menu)
+
+Menus offer a very compact way of presenting a large number of choices 
+to the user without cluttering the interface. Tkinter offers the 
+following two widgets to handle menus:
+
+* **The Menu widget:** This appears at the top of applications, which is 
+always visible to end users.
+* **The menu Items:** This shows up when a user clicks on a menu.
+
+We will use the following code to add Toplevel menu buttons:
+
+```python
+menu_bar = Menu(parent, **options)
+```
+
+For example, to add a **File** menu, we will use the following code:
+
+```python
+...
+menu_bar = Menu(root)    # add a menubar to the 'root' window
+file_menu = Menu(menu_bar, tearoff=0)
+menu_bar.add_cascade(label='File', menu=file_menu)
+root.config(menu=menu_bar)
+...
+```
+
+The application's source code is:
+
+```python
+#!/usr/bin/env python3
+from tkinter import *
+
+PROGRAM_NAME = "Texty"
+
+root = Tk()
+root.geometry('350x350')
+root.title(PROGRAM_NAME)
+
+menu_bar = Menu(root)
+file_menu = Menu(menu_bar, tearoff=0)
+menu_bar.add_cascade(label='File', menu=file_menu)
+root.config(menu=menu_bar)
+
+root.mainloop()
+```
+
+![texty-img](screenshots/texty-02.png)
+
+Also, type `$ git checkout 2a` to perform a checkout of this version.
