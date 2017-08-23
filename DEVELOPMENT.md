@@ -113,3 +113,50 @@ root.mainloop()
 ![texty-img](screenshots/texty-02.png)
 
 Also, type `$ git checkout 2a` to perform a checkout of this version.
+
+## Adding a menu and menu items (Edit, View and About menus)
+
+To complement the previous step, add **Edit**, **View**, and **About** 
+menus:
+
+```python
+...
+edit_menu = Menu(menu_bar, tearoff=0)
+view_menu = Menu(menu_bar, tearoff=0)
+about_menu = Menu(menu_bar, tearoff=0)
+...
+menu_bar.add_cascade(label='Edit', menu=edit_menu)
+menu_bar.add_cascade(label='View', menu=view_menu)
+menu_bar.add_cascade(label='About', menu=about_menu)
+...
+```
+
+The application's source code is:
+
+```python
+#!/usr/bin/env python3
+from tkinter import *
+
+PROGRAM_NAME = "Texty"
+
+root = Tk()
+root.geometry('350x350')
+root.title(PROGRAM_NAME)
+
+menu_bar = Menu(root)
+file_menu = Menu(menu_bar, tearoff=0)
+edit_menu = Menu(menu_bar, tearoff=0)
+view_menu = Menu(menu_bar, tearoff=0)
+about_menu = Menu(menu_bar, tearoff=0)
+menu_bar.add_cascade(label='File', menu=file_menu)
+menu_bar.add_cascade(label='Edit', menu=edit_menu)
+menu_bar.add_cascade(label='View', menu=view_menu)
+menu_bar.add_cascade(label='About', menu=about_menu)
+root.config(menu=menu_bar)
+
+root.mainloop()
+```
+
+![texty-img](screenshots/texty-03.png)
+
+Also, type `$ git checkout 2b` to perform a checkout of this version.
