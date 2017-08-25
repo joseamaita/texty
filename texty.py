@@ -83,4 +83,17 @@ about_menu.add_command(label='Help')
 
 root.config(menu=menu_bar)
 
+shortcut_bar = Frame(root,  height=25, background='light sea green')
+shortcut_bar.pack(expand='no', fill='x')
+
+line_number_bar = Text(root, 
+                       width = 4, 
+                       padx = 3, 
+                       takefocus = 0, 
+                       border = 0, 
+                       background = 'khaki', 
+                       state = 'disabled', 
+                       wrap = 'none')
+line_number_bar.pack(side='left', fill='y')
+
 root.mainloop()
