@@ -96,4 +96,11 @@ line_number_bar = Text(root,
                        wrap = 'none')
 line_number_bar.pack(side='left', fill='y')
 
+content_text = Text(root, wrap='word')
+content_text.pack(expand='yes', fill='both')
+scroll_bar = Scrollbar(content_text)
+content_text.configure(yscrollcommand=scroll_bar.set)
+scroll_bar.config(command=content_text.yview)
+scroll_bar.pack(side='right', fill='y')
+
 root.mainloop()
