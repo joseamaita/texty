@@ -76,6 +76,24 @@ edit_menu.add_command(label = 'Select All',
                       accelerator = 'Ctrl+A')
 
 menu_bar.add_cascade(label='View', menu=view_menu)
+show_line_number = IntVar()
+show_line_number.set(1)
+view_menu.add_checkbutton(label = 'Show Line Number', 
+                          variable = show_line_number)
+show_cursor_info = IntVar()
+show_cursor_info.set(1)
+view_menu.add_checkbutton(label = 'Show Cursor Location at Bottom', 
+                          variable = show_cursor_info)
+highlight_line = IntVar()
+view_menu.add_checkbutton(label = 'Highlight Current Line', 
+                          onvalue = 1, 
+                          offvalue = 0, 
+                          variable = highlight_line)
+themes_menu = Menu(menu_bar, tearoff=0)
+view_menu.add_cascade(label='Themes', menu=themes_menu)
+theme_choice = StringVar()
+theme_choice.set('Default')
+themes_menu.add_radiobutton(label='Default', variable=theme_choice)
 
 menu_bar.add_cascade(label='About', menu=about_menu)
 about_menu.add_command(label='About')
