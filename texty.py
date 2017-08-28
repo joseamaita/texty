@@ -91,9 +91,17 @@ view_menu.add_checkbutton(label = 'Highlight Current Line',
                           variable = highlight_line)
 themes_menu = Menu(menu_bar, tearoff=0)
 view_menu.add_cascade(label='Themes', menu=themes_menu)
+color_schemes = {'Default': '#000000.#FFFFFF',
+                 'Greygarious': '#83406A.#D1D4D1', 
+                 'Aquamarine': '#5B8340.#D1E7E0', 
+                 'Bold Beige': '#4B4620.#FFF0E1', 
+                 'Cobalt Blue': '#ffffBB.#3333aa', 
+                 'Olive Green': '#D1E7E0.#5B8340', 
+                 'Night Mode': '#FFFFFF.#000000'}
 theme_choice = StringVar()
 theme_choice.set('Default')
-themes_menu.add_radiobutton(label='Default', variable=theme_choice)
+for k in sorted(color_schemes):
+    themes_menu.add_radiobutton(label=k, variable=theme_choice)
 
 menu_bar.add_cascade(label='About', menu=about_menu)
 about_menu.add_command(label='About')
