@@ -7,6 +7,18 @@ root = Tk()
 root.geometry('350x350')
 root.title(PROGRAM_NAME)
 
+def cut():
+    content_text.event_generate("<<Cut>>")
+    return "break"
+
+def copy():
+    content_text.event_generate("<<Copy>>")
+    return "break"
+
+def paste():
+    content_text.event_generate("<<Paste>>")
+    return "break"
+
 new_file_icon = PhotoImage(file='files/new_file.gif')
 open_file_icon = PhotoImage(file='files/open_file.gif')
 save_file_icon = PhotoImage(file='files/save.gif')
@@ -57,15 +69,18 @@ edit_menu.add_separator()
 edit_menu.add_command(label = 'Cut', 
                       accelerator = 'Ctrl+X', 
                       compound = 'left', 
-                      image = cut_icon)
+                      image = cut_icon, 
+                      command = cut)
 edit_menu.add_command(label = 'Copy', 
                       accelerator = 'Ctrl+C', 
                       compound = 'left', 
-                      image = copy_icon)
+                      image = copy_icon, 
+                      command = copy)
 edit_menu.add_command(label = 'Paste', 
                       accelerator = 'Ctrl+V', 
                       compound = 'left', 
-                      image = paste_icon)
+                      image = paste_icon, 
+                      command = paste)
 edit_menu.add_separator()
 edit_menu.add_command(label = 'Find', 
                       underline = 0, 
