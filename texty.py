@@ -19,6 +19,10 @@ def paste():
     content_text.event_generate("<<Paste>>")
     return "break"
 
+def undo():
+    content_text.event_generate("<<Undo>>")
+    return "break"
+
 new_file_icon = PhotoImage(file='files/new_file.gif')
 open_file_icon = PhotoImage(file='files/open_file.gif')
 save_file_icon = PhotoImage(file='files/save.gif')
@@ -60,7 +64,8 @@ menu_bar.add_cascade(label='Edit', menu=edit_menu)
 edit_menu.add_command(label = 'Undo', 
                       accelerator = 'Ctrl+Z', 
                       compound = 'left', 
-                      image = undo_icon)
+                      image = undo_icon, 
+                      command = undo)
 edit_menu.add_command(label = 'Redo', 
                       accelerator = 'Ctrl+Y', 
                       compound = 'left', 
@@ -137,7 +142,7 @@ line_number_bar = Text(root,
                        wrap = 'none')
 line_number_bar.pack(side='left', fill='y')
 
-content_text = Text(root, wrap='word')
+content_text = Text(root, wrap='word', undo=1)
 content_text.pack(expand='yes', fill='both')
 scroll_bar = Scrollbar(content_text)
 content_text.configure(yscrollcommand=scroll_bar.set)
