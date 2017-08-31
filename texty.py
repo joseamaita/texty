@@ -23,6 +23,10 @@ def undo():
     content_text.event_generate("<<Undo>>")
     return "break"
 
+def redo(event=None):
+    content_text.event_generate("<<Redo>>")
+    return "break"
+
 new_file_icon = PhotoImage(file='files/new_file.gif')
 open_file_icon = PhotoImage(file='files/open_file.gif')
 save_file_icon = PhotoImage(file='files/save.gif')
@@ -69,7 +73,8 @@ edit_menu.add_command(label = 'Undo',
 edit_menu.add_command(label = 'Redo', 
                       accelerator = 'Ctrl+Y', 
                       compound = 'left', 
-                      image = redo_icon)
+                      image = redo_icon, 
+                      command = redo)
 edit_menu.add_separator()
 edit_menu.add_command(label = 'Cut', 
                       accelerator = 'Ctrl+X', 
@@ -148,5 +153,8 @@ scroll_bar = Scrollbar(content_text)
 content_text.configure(yscrollcommand=scroll_bar.set)
 scroll_bar.config(command=content_text.yview)
 scroll_bar.pack(side='right', fill='y')
+
+content_text.bind('<Control-y>', redo)
+content_text.bind('<Control-Y>', redo)
 
 root.mainloop()
