@@ -1614,3 +1614,128 @@ functions.
 ![texty-img](screenshots/texty-16.png)
 
 Also, type `$ git checkout 5c` to perform a checkout of this version.
+
+## Getting to know the concepts of indexing and tagging
+
+Though we managed to leverage some built-in functionality to gain a 
+quick advantage, we need more control over the text area so that we can 
+bend it to our will. This will require the ability to target each 
+character or location of the text with precision.
+
+We will need to know the exact position of each character, the cursor, 
+or the selected area in order to do anything with the contents of the 
+editor.
+
+The Text widget offers us the ability to manipulate its content 
+using `index`, `tags`, and `mark`, which let us target a position or 
+place within the text area for manipulation.
+
+**Index**
+
+Indexing helps you target a particular place within a piece of text. For 
+example, if you want to mark a particular word in bold, red, or in a 
+different font size, you can do so if you know the index of the starting 
+point and the index of the end point that needs to be targeted.
+
+The index must be specified in one of the following formats:
+
+The index format | Description
+---------------- | -----------
+`x.y` | This refers to the character at row *x* and column *y*.
+`@x,y` | This refers to the character that covers the *x,y* coordinate within the text's window.
+`end` | This refers to the end of the text.
+`mark` | This refers to the character after a named mark.
+`tag.first` | This refers to the first character in the text that has been tagged with a given tag.
+`tag.last` | This refers to the last character in the text that has been tagged with a given tag.
+`selection (SEL_FIRST, SEL_LAST)` | This corresponds to the current selection. The `SEL_FIRST` and `SEL_LAST` constants refer to the start position and end position in the selection. Tkinter raises a `TclError` exception if there is no selection.
+`window_name` | This refers to the position of the embedded window named `window_name`.
+`image_name` | This refers to the position of the embedded image named `image_name`.
+`INSERT` | This refers to the position of the insertion cursor.
+`CURRENT` | This refers to the position of the character that is closest to the mouse pointer.
+
+Note a small quirk here. The counting of rows in a Text widget starts 
+at `1`, while the counting of columns starts at `0`. Therefore, the 
+index for the starting position of the Text widget is `1.0` (that is, 
+row number `1` and column number `0`).
+
+An index can be further manipulated by using **modifiers** 
+and **submodifiers**. Some examples of modifiers and submodifers are as 
+follows:
+
+Example | Description
+------- | -----------
+`end - 1 chars` or `end - 1 c` | This refers to the index of the character before the one at the end
+`insert +5lines` | This refers to the index of five lines ahead of the insertion cursor
+`insertwordstart - 1 c` | This refers to the character just before the first one in a word containing the insertion cursor
+`end linestart` | This refers to the index of the line start of the end line
+
+Indexes are often used as arguments to functions. Let's see some 
+examples:
+
+Example | Description
+------- | -----------
+`my_text.delete(1.0,END)` | This means that you can delete from line `1`, column `0` until the end
+`my_text.get(1.0, END)` | This gets the content from `1.0` (beginning) until the end
+`my_text.delete('insert-1c', INSERT)` | This deletes a character at the insertion cursor
+
+**Tags**
+
+Tags are used to annotate text with an identification string that can 
+then be used to manipulate the tagged text. Tkinter has a built-in tag 
+called **SEL**, which is automatically applied to the selected text. In 
+addition to **SEL**, you can define your own tags. A text range can be 
+associated with multiple tags, and the same tag can be used for many 
+different text ranges.
+
+Some examples of tagging are as follows:
+
+```python
+my_text.tag_add('sel', '1.0', 'end') # add SEL tag from start(1.0) to end
+my_text.tag_add('danger', "insert linestart", "insert lineend+1c")
+my_text.tag_remove('danger', 1.0, "end")
+my_text.tag_config('danger', background=red)
+my_text.tag_config('outdated', overstrike=1)
+```
+
+You can specify the visual style for a given tag with `tag_config` using 
+options such as `background (color)`, `bgstipple (bitmap)`
+, `borderwidth (distance)`, `fgstipple (bitmap)`, `font (font)`
+, `foreground (color)`, `justify (constant)`, `lmargin1 (distance)`
+, `lmargin2 (distance)`, `offset (distance)`, `overstrike (flag)`
+, `relief (constant)`, `rmargin (distance)`, `spacing1 (distance)`
+, `tabs (string)`, `underline (flag)`, and `wrap (constant)`.
+
+For a complete reference of text indexing and tagging, type the 
+following command into the Python interactive shell:
+
+```python
+>>> import tkinter
+>>> help(tkinter.Text)
+Help on class Text in module tkinter:
+
+class Text(Widget, XView, YView)
+ |  Text widget which can display text in various forms.
+ |  
+ |  Method resolution order:
+ |      Text
+ |      Widget
+ |      BaseWidget
+ |      Misc
+ |      Pack
+ |      Place
+ |      Grid
+ |      XView
+ |      YView
+ |      builtins.object
+ |  
+ |  Methods defined here:
+ |  
+ |  __init__(self, master=None, cnf={}, **kw)
+ |      Construct a text widget with the parent MASTER.
+ |      
+ |      STANDARD OPTIONS
+:
+```
+
+Equipped with a basic understanding of indexing and tagging, let's 
+implement some more features in the code editor.
