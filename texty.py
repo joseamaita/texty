@@ -7,6 +7,10 @@ root = Tk()
 root.geometry('350x350')
 root.title(PROGRAM_NAME)
 
+def select_all(event=None):
+    content_text.tag_add('sel', '1.0', 'end')
+    return "break"
+
 def cut():
     content_text.event_generate("<<Cut>>")
     return "break"
@@ -98,7 +102,8 @@ edit_menu.add_command(label = 'Find',
 edit_menu.add_separator()
 edit_menu.add_command(label = 'Select All', 
                       underline = 7, 
-                      accelerator = 'Ctrl+A')
+                      accelerator = 'Ctrl+A', 
+                      command = select_all)
 
 menu_bar.add_cascade(label='View', menu=view_menu)
 show_line_number = IntVar()
@@ -156,5 +161,7 @@ scroll_bar.pack(side='right', fill='y')
 
 content_text.bind('<Control-y>', redo)
 content_text.bind('<Control-Y>', redo)
+content_text.bind('<Control-a>', select_all)
+content_text.bind('<Control-A>', select_all)
 
 root.mainloop()

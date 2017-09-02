@@ -1739,3 +1739,234 @@ class Text(Widget, XView, YView)
 
 Equipped with a basic understanding of indexing and tagging, let's 
 implement some more features in the code editor.
+
+## Implementing the Select All feature
+
+We know that Tkinter has a built-in `sel` tag that applies a selection 
+to a given text range. We want to apply this tag to the entire text in 
+the widget.
+
+We can simply define a function to handle this, as follows:
+
+```python
+def select_all(event=None):
+    content_text.tag_add('sel', '1.0', 'end')
+    return "break"
+```
+
+After doing this, add a callback to the `Select All` menu item:
+
+```python
+edit_menu.add_command(label = 'Select All', 
+                      underline = 7, 
+                      accelerator = 'Ctrl+A', 
+                      command = select_all)
+```
+
+We also need to bind the function to the *Ctrl + A* keyboard shortcut. 
+We do this by using the following key bindings:
+
+```python
+content_text.bind('<Control-a>', select_all)
+content_text.bind('<Control-A>', select_all)
+```
+
+The coding of the `Select All` feature is complete. To try it out, add 
+the following text to the text widget:
+
+```
+The standard Lorem Ipsum passage, used 
+since the 1500s
+
+"Lorem ipsum dolor sit amet, consectetur 
+adipiscing elit, sed do eiusmod tempor 
+incididunt ut labore et dolore magna 
+aliqua. Ut enim ad minim veniam, quis 
+nostrud exercitation ullamco laboris nisi 
+ut aliquip ex ea commodo consequat. Duis 
+aute irure dolor in reprehenderit in 
+voluptate velit esse cillum dolore eu 
+fugiat nulla pariatur. Excepteur sint 
+occaecat cupidatat non proident, sunt in 
+culpa qui officia deserunt mollit anim id 
+est laborum."
+```
+
+Then click on the menu item **Select All**, or use the *Ctrl + A* 
+(accelerator shortcut key) to complete the task.
+
+The application's source code is:
+
+```python
+#!/usr/bin/env python3
+from tkinter import *
+
+PROGRAM_NAME = "Texty"
+
+root = Tk()
+root.geometry('350x350')
+root.title(PROGRAM_NAME)
+
+def select_all(event=None):
+    content_text.tag_add('sel', '1.0', 'end')
+    return "break"
+
+def cut():
+    content_text.event_generate("<<Cut>>")
+    return "break"
+
+def copy():
+    content_text.event_generate("<<Copy>>")
+    return "break"
+
+def paste():
+    content_text.event_generate("<<Paste>>")
+    return "break"
+
+def undo():
+    content_text.event_generate("<<Undo>>")
+    return "break"
+
+def redo(event=None):
+    content_text.event_generate("<<Redo>>")
+    return "break"
+
+new_file_icon = PhotoImage(file='files/new_file.gif')
+open_file_icon = PhotoImage(file='files/open_file.gif')
+save_file_icon = PhotoImage(file='files/save.gif')
+cut_icon = PhotoImage(file='files/cut.gif')
+copy_icon = PhotoImage(file='files/copy.gif')
+paste_icon = PhotoImage(file='files/paste.gif')
+undo_icon = PhotoImage(file='files/undo.gif')
+redo_icon = PhotoImage(file='files/redo.gif')
+
+menu_bar = Menu(root)
+file_menu = Menu(menu_bar, tearoff=0)
+edit_menu = Menu(menu_bar, tearoff=0)
+view_menu = Menu(menu_bar, tearoff=0)
+about_menu = Menu(menu_bar, tearoff=0)
+
+menu_bar.add_cascade(label='File', menu=file_menu)
+file_menu.add_command(label = 'New', 
+                      accelerator = 'Ctrl+N', 
+                      compound = 'left', 
+                      image = new_file_icon, 
+                      underline = 0)
+file_menu.add_command(label = 'Open', 
+                      accelerator = 'Ctrl+O', 
+                      compound = 'left', 
+                      image = open_file_icon, 
+                      underline = 0)
+file_menu.add_command(label = 'Save', 
+                      accelerator = 'Ctrl+S', 
+                      compound = 'left', 
+                      image = save_file_icon, 
+                      underline = 0)
+file_menu.add_command(label = 'Save as', 
+                      accelerator = 'Shift+Ctrl+S')
+file_menu.add_separator()
+file_menu.add_command(label = 'Exit', 
+                      accelerator = 'Alt+F4')
+
+menu_bar.add_cascade(label='Edit', menu=edit_menu)
+edit_menu.add_command(label = 'Undo', 
+                      accelerator = 'Ctrl+Z', 
+                      compound = 'left', 
+                      image = undo_icon, 
+                      command = undo)
+edit_menu.add_command(label = 'Redo', 
+                      accelerator = 'Ctrl+Y', 
+                      compound = 'left', 
+                      image = redo_icon, 
+                      command = redo)
+edit_menu.add_separator()
+edit_menu.add_command(label = 'Cut', 
+                      accelerator = 'Ctrl+X', 
+                      compound = 'left', 
+                      image = cut_icon, 
+                      command = cut)
+edit_menu.add_command(label = 'Copy', 
+                      accelerator = 'Ctrl+C', 
+                      compound = 'left', 
+                      image = copy_icon, 
+                      command = copy)
+edit_menu.add_command(label = 'Paste', 
+                      accelerator = 'Ctrl+V', 
+                      compound = 'left', 
+                      image = paste_icon, 
+                      command = paste)
+edit_menu.add_separator()
+edit_menu.add_command(label = 'Find', 
+                      underline = 0, 
+                      accelerator = 'Ctrl+F')
+edit_menu.add_separator()
+edit_menu.add_command(label = 'Select All', 
+                      underline = 7, 
+                      accelerator = 'Ctrl+A', 
+                      command = select_all)
+
+menu_bar.add_cascade(label='View', menu=view_menu)
+show_line_number = IntVar()
+show_line_number.set(1)
+view_menu.add_checkbutton(label = 'Show Line Number', 
+                          variable = show_line_number)
+show_cursor_info = IntVar()
+show_cursor_info.set(1)
+view_menu.add_checkbutton(label = 'Show Cursor Location at Bottom', 
+                          variable = show_cursor_info)
+highlight_line = IntVar()
+view_menu.add_checkbutton(label = 'Highlight Current Line', 
+                          onvalue = 1, 
+                          offvalue = 0, 
+                          variable = highlight_line)
+themes_menu = Menu(menu_bar, tearoff=0)
+view_menu.add_cascade(label='Themes', menu=themes_menu)
+color_schemes = {'Default': '#000000.#FFFFFF',
+                 'Greygarious': '#83406A.#D1D4D1', 
+                 'Aquamarine': '#5B8340.#D1E7E0', 
+                 'Bold Beige': '#4B4620.#FFF0E1', 
+                 'Cobalt Blue': '#ffffBB.#3333aa', 
+                 'Olive Green': '#D1E7E0.#5B8340', 
+                 'Night Mode': '#FFFFFF.#000000'}
+theme_choice = StringVar()
+theme_choice.set('Default')
+for k in sorted(color_schemes):
+    themes_menu.add_radiobutton(label=k, variable=theme_choice)
+
+menu_bar.add_cascade(label='About', menu=about_menu)
+about_menu.add_command(label='About')
+about_menu.add_command(label='Help')
+
+root.config(menu=menu_bar)
+
+shortcut_bar = Frame(root,  height=25, background='light sea green')
+shortcut_bar.pack(expand='no', fill='x')
+
+line_number_bar = Text(root, 
+                       width = 4, 
+                       padx = 3, 
+                       takefocus = 0, 
+                       border = 0, 
+                       background = 'khaki', 
+                       state = 'disabled', 
+                       wrap = 'none')
+line_number_bar.pack(side='left', fill='y')
+
+content_text = Text(root, wrap='word', undo=1)
+content_text.pack(expand='yes', fill='both')
+scroll_bar = Scrollbar(content_text)
+content_text.configure(yscrollcommand=scroll_bar.set)
+scroll_bar.config(command=content_text.yview)
+scroll_bar.pack(side='right', fill='y')
+
+content_text.bind('<Control-y>', redo)
+content_text.bind('<Control-Y>', redo)
+content_text.bind('<Control-a>', select_all)
+content_text.bind('<Control-A>', select_all)
+
+root.mainloop()
+```
+
+![texty-img](screenshots/texty-17.png)
+
+Also, type `$ git checkout 6b` to perform a checkout of this version.
