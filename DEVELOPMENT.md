@@ -1967,6 +1967,11 @@ content_text.bind('<Control-A>', select_all)
 root.mainloop()
 ```
 
+![texty-img](screenshots/texty-18.png)
+
+![texty-img](screenshots/texty-19.png)
+
 ![texty-img](screenshots/texty-17.png)
 
-Also, type `$ git checkout 6b` to perform a checkout of this version.
+Also, type `$ git checkout 6b` or `$ git checkout 6c` to perform a 
+checkout of this version.
